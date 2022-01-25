@@ -6,30 +6,30 @@ import buildAPIQuery from "./helpers/buildAPIQuery";
 import secrets from './keys.json';
 
 function App() {
-
-  const [data, setData] = useState([]);
   const [query, setQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [errResponse, setErrResponse] = useState(null);
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null)
 
   let baseUrl = `https://geo.ipify.org/api/v2/country,city?apiKey=${secrets.apikey}&`
 
   async function fetchGeoData(url) {
     try {
-      setErrResponse(null)
+      setError(null)
       setIsLoading(true)
+
       let res = await fetch(url)
       let json = await res.json()
       if (json.code === 422) {
-        setErrResponse(json.messages)
-        setIsLoading(false)
-        throw new Error(json.messages)
+        let error = new Error(json.messages)
+        setError(error)
+        throw error
       }
       setData(json)
-      setIsLoading(false)
-      console.log(json);
     } catch (err) {
-      console.error(err);
+      setError(err);
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -52,20 +52,22 @@ function App() {
 
 
   return (
-    <div className="flex items-center flex-col">
-      <Header
-        query={query}
-        handleQueryChange={handleQueryChange}
-        handleSearchSubmit={handleSearchSubmit}
-        setQuery={setQuery}
-      />
-      <ResultBar
-        data={data}
-        isLoading={isLoading}
-        errResponse={errResponse}
-      />
-      <Map />
-    </div>
+    <>
+      <div className="flex items-center flex-col relative mx-6">
+        <Header
+          query={query}
+          handleQueryChange={handleQueryChange}
+          handleSearchSubmit={handleSearchSubmit}
+          setQuery={setQuery}
+        />
+        <ResultBar
+          data={data}
+          isLoading={isLoading}
+          error={error}
+        />
+      </div>
+      <Map isLoading={isLoading} data={data} />
+    </>
   );
 }
 

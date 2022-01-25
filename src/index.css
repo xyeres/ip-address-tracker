@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html,
+body {
+  height: 100vh;
+}
+
+#root {
+  height: inherit;
+}
+
+body {
+  background-color: #6086f3;
+}
+
+
+@layer base {
+  body {
+    @apply bg-theme-pattern bg-left-top bg-no-repeat;
+  }
+}

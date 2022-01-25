@@ -2,16 +2,15 @@ import { useEffect, useState } from "react";
 import Header from "./components/Header/Header";
 import Map from "./components/Map/Map";
 import ResultBar from "./components/ResultBar/ResultBar";
-import buildAPIQuery from "./helpers/buildAPIQuery";
 import secrets from './keys.json';
 
 function App() {
+  const baseUrl = `https://geo.ipify.org/api/v2/country,city?apiKey=${secrets.apikey}&`
   const [query, setQuery] = useState('');
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null)
-
-  let baseUrl = `https://geo.ipify.org/api/v2/country,city?apiKey=${secrets.apikey}&`
+  const [url, setUrl] = useState(baseUrl);
 
   async function fetchGeoData(url) {
     try {
@@ -39,17 +38,12 @@ function App() {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    const url = buildAPIQuery(baseUrl, { ipAddress: query })
-    fetchGeoData(url)
+    setUrl(baseUrl + `ipAddress=${query}`)
   }
 
   useEffect(() => {
-    const url = buildAPIQuery(baseUrl, { ipAddress: null })
     fetchGeoData(url)
-
-  }, [baseUrl]);
-
-
+  }, [url]);
 
   return (
     <>

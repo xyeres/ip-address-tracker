@@ -1,7 +1,6 @@
 import { IoChevronForwardOutline } from "react-icons/io5";
 
 export default function Header({ query, handleQueryChange, handleSearchSubmit }) {
-  console.log(<IoChevronForwardOutline />);
   return (
     <div className="m-4 my-4 pb-24 overflow-hidden flex flex-col items-center justify-items-center">
       <h1 className="text-2xl mb-3 text-white font-bold">IP Address Tracker </h1>

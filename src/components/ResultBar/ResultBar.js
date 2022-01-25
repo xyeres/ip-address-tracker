@@ -2,11 +2,11 @@ import React from 'react';
 import Loading from '../Loading/Loading';
 
 
-export default function ResultBar({ isLoading, data, errResponse }) {
+export default function ResultBar({ isLoading, data, error }) {
   return (
     isLoading ? <Loading /> : (
       <section className='flex flex-col md:items-start md:text-left text-center items-center md:flex-row md:divide-x absolute md:top-44 top-36 z-50 bg-white rounded-md p-5 md:p-8 max-w-screen-lg w-full drop-shadow-2xl content-around'>
-        {errResponse ? <div className='text-xl font-bold'>{errResponse}</div> : (
+        {error ? <div className='text-xl font-bold'>{error.message}</div> : (
           <>
             <div className='flex-1 h-full pr-2 py-2'>
               <p className='font-bold pb-2 text-xs uppercase text-zinc-500'>IP Address</p>
